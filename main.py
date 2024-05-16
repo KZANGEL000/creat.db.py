@@ -32,6 +32,7 @@ class Card(db.Model):
 def index():
     #Отображение объектов из БД
     #Задание №2. Отоброзить объекты из БД в index.html
+    card = Card.query.order_by(Card.id).all()
     
 
     return render_template('index.html',
@@ -43,6 +44,7 @@ def index():
 @app.route('/card/<int:id>')
 def card(id):
     #Задание №2. Отоброзить нужную карточку по id
+    card = Card.query.get(id)
     
 
     return render_template('card.html', card=card)
@@ -61,12 +63,12 @@ def form_create():
         text =  request.form['text']
 
         #Задание №2. Создайте сопосб записи данных в БД
-    
+        card = Card(title=title, subtitle=subtitle, text=text)
+        db.session.add(card)
+        db.session.commit()
 
 
         
-
-
 
 
         return redirect('/')
